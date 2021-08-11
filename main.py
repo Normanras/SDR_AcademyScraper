@@ -1,5 +1,5 @@
 import scrapy
-from TestCrawler.items import TutorialcrawlItem
+from TestCrawler.items import AcademyItem
 import crochet
 crochet.setup()
 
@@ -10,9 +10,10 @@ from scrapy.signalmanager import dispatcher
 import time
 import os
 
-# Importing our Scraping Function from the amazon_scraping file
+from TestCrawler.spiders import checkuniversity
+from TestCrawler.spiders.checkuniversity import *
 
-from TestCrawler.spiders.checkuniversity import AcademyCrawlerSpider
+# Importing our Scraping Function from the amazon_scraping file
 
 app = Flask(__name__)
 
@@ -44,8 +45,17 @@ def scrape():
 @crochet.run_in_reactor
 def scrape_with_crochet(baseURL):
     dispatcher.connect(_crawler_result, signal=signals.item_scraped)
-
-    eventual = crawl_runner.crawl(AcademyCrawlerSpider, category='baseURL')
+     #custom_settings = {
+    #    'FEED_URI' : 'crawl1.json',
+    #    'FEED_FORMAT' : 'json',
+    #    'FEED_EXPORT_ENCODING' : 'utf-8',
+    #}
+    crawl_runner = CrawlerRunner(settings={
+        "FEEDS":{
+            "crawl1.json": {"format":"json"},
+        },
+    })
+    eventual = crawl_runner.crawl(checkuniversity, category=baseURL)
     return eventual
 
 def _crawler_result(item, response, spider):

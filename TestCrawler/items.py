@@ -4,9 +4,8 @@
 # https://docs.scrapy.org/en/latest/topics/items.html
 
 import scrapy
-from scrapy.item import Item, Field
 
-class TutorialcrawlItem(scrapy.Item):
+class AcademyItem(scrapy.Item):
     title = scrapy.Field()
     title2 = scrapy.Field()
     names = scrapy.Field()

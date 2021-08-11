@@ -7,14 +7,10 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-from scrapy.crawler import CrawlerRunner
-
-
 BOT_NAME = 'TestCrawler'
 
 SPIDER_MODULES = ['TestCrawler.spiders']
 NEWSPIDER_MODULE = 'TestCrawler.spiders'
-CRAWLERRUNNER = 'AcademyCrawlerSpider'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'TestCrawler (+http://www.yourdomain.com)'
@@ -57,13 +53,13 @@ ROBOTSTXT_OBEY = True
 #    'TestCrawler.middlewares.TestcrawlerDownloaderMiddleware': 543,
 #}
 
-DOWNLOAD_TIMEOUT = 540
-DOWNLOAD_DELAY = 5
-DEPTH_LIMIT = 10
-EXTENSIONS = {
-    'scrapy.extensions.telnet.TelnetConsole': None,
-    'scrapy.extensions.closespider.CloseSpider': 1
-}
+#DOWNLOAD_TIMEOUT = 540
+#DOWNLOAD_DELAY = 5
+#DEPTH_LIMIT = 10
+#EXTENSIONS = {
+#    'scrapy.extensions.telnet.TelnetConsole': None,
+#    'scrapy.extensions.closespider.CloseSpider': 1
+#}
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html

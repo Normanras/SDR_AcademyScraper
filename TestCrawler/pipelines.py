@@ -6,6 +6,14 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
+
+
+class AcademyPipeline:
+    def process_item(self, item, spider):
+        return item
+
+'''
+from itemadapter import ItemAdapter
 from scrapy.exceptions import DropItem
 
 class DuplicatesPipeline:
@@ -20,3 +28,4 @@ class DuplicatesPipeline:
         else:
             self.ids_seen.add(adapter['id'])
             return item
+            '''

@@ -1,35 +1,37 @@
 import scrapy
-from scrapy import Request
-from TestCrawler.items import TutorialcrawlItem
+from scrapy import FormRequest
+from TestCrawler.items import AcademyItem 
 from scrapy.linkextractors import LinkExtractor
-from scrapy.spiders import Rule, CrawlSpider
+from scrapy.spiders import Rule
+from scrapy.crawler import CrawlerRunner
+from scrapy.utils.project import get_project_settings
 
-class AcademyCrawlerSpider(scrapy.Spider):
+class AcademySpider(scrapy.Spider):
     name = 'checkuniversity'
-    '''
-    url = input("Please enter the URL of the company:  ")
-    allowed_domains = [f"https://{url}"]
-    start_urls = [f"www.{url}"]
-    base_url = start_urls
-    rules = [Rule(LinkExtractor(allow=['university/','resources/','knowledge/','academy/','training/']), callback='parse_stuff', follow=True)]
+    #url = input("Please enter the URL of the company:  ")
+    #allowed_domains = [f"www.{url}"]
+    #start_urls = [f"http://{url}"]
+    #base_url = start_urls
+    #rules = [Rule(LinkExtractor(allow=['university/','resources/','knowledge/','academy/','training/']), callback='parse_stuff', follow=True)]
     #file = f'Crawl_{url}.csv'
-    '''
-    myBaseUrl = ''
+    url = []
+    myBaseUrl = '' 
     start_urls = []
+
     def __init__(self, category='', **kwargs): 
         self.myBaseUrl = category
         self.start_urls.append(self.myBaseUrl)
         super().__init__(**kwargs)
 
-    custom_settings = {
-        'FEED_URI' : 'crawl1.json',
-        'FEED_FORMAT' : 'json',
-        'FEED_EXPORT_ENCODING' : 'utf-8',
-    }
-
+    #custom_settings = {
+    #    'FEED_URI' : 'crawl1.json',
+    #    'FEED_FORMAT' : 'json',
+    #    'FEED_EXPORT_ENCODING' : 'utf-8',
+    #}
+    
     def parse(self, response):
         universitylink = response.xpath('//a[contains(@href,"university")]/@href').get()
-        if universitylink is not None:
+        if universitylink is not None: #suggestion: ask for none and only pull good answers
             universitylink = response.urljoin(universitylink)
             yield scrapy.Request(universitylink, callback=self.parse_page)
 
@@ -53,7 +55,7 @@ class AcademyCrawlerSpider(scrapy.Spider):
             academylink = response.urljoin(academylink)
             yield scrapy.Request(academylink, callback=self.parse_page)
 
-    def parse_page(self, response):
+    def parse_page(self, response): 
         title = response.xpath('//title/text()').extract()
         title2 = response.xpath('//head/title/text()').extract()
         university = response.xpath('//a[contains(@href,"university")]/@href').extract()
@@ -71,7 +73,7 @@ class AcademyCrawlerSpider(scrapy.Spider):
             'Resources' : resources,
         }
 
-        item = TutorialcrawlItem()
+        item = AcademyItem()
 
         item['title'] = title
         item['title2'] = title2
@@ -81,4 +83,4 @@ class AcademyCrawlerSpider(scrapy.Spider):
         item['training'] = training
 
         for (title, titles2, university2, academy2, training2, resources2) in zip(title, title2, university, academy, training, resources):
-            yield TutorialcrawlItem(titles=title, title2=titles2, university=university2, academy=academy2, training=training2, resources=resources2)
+            yield AcademyItem(titles=title, title2=titles2, university=university2, academy=academy2, training=training2, resources=resources2)
